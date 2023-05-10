@@ -1,4 +1,4 @@
-package bai1;
+ package bai1;
 
 import java.util.Scanner;
 
@@ -19,7 +19,7 @@ public class OnTapJava1 {
             System.out.println("0:Dung chuong trinh");
             System.out.println("=================");
             int luaChon = Integer.parseInt(sc.nextLine());
-                    
+                  
 
             switch (luaChon) {
                 case 1:
