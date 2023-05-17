@@ -4,7 +4,6 @@
  */
 package lab2Bai4;
 
-import lab2.*;
 
 /**
  *

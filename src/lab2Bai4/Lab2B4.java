@@ -4,19 +4,17 @@
  */
 package lab2Bai4;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import lab2.User;
 
 /**
  *
  * @author ACER
  */
-public class Lab2B4 extends javax.swing.JFrame  {
+public class Lab2B4 extends javax.swing.JFrame {
+
     private DefaultTableModel tm;
-   
+
     private UserServiceImpl service = new UserServiceImpl();
     private int index = -1;
 
@@ -25,15 +23,13 @@ public class Lab2B4 extends javax.swing.JFrame  {
      */
     public Lab2B4() {
         initComponents();
-        String[] u = {"Username","Password","Role"};
-        tm = new DefaultTableModel(u,0);
+        String[] u = {"Username", "Password", "Role"};
+        tm = new DefaultTableModel(u, 0);
         jTable1.setModel(tm);
         this.setLocationRelativeTo(this);
         fillTable();
-        
+
     }
-    
-  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -89,10 +85,20 @@ public class Lab2B4 extends javax.swing.JFrame  {
         jLabel2.setText("user management");
 
         jButton3.setText("UPDATE");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Username");
 
         jButton4.setText("RESET");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Password");
 
@@ -226,7 +232,14 @@ public class Lab2B4 extends javax.swing.JFrame  {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       
+        boolean f = service.addUser(readForm());
+        if (f) {
+            JOptionPane.showMessageDialog(this, "Thanh cong");
+        } else {
+            JOptionPane.showMessageDialog(this, "That bai");
+        }
+
+        this.fillTable();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -236,12 +249,50 @@ public class Lab2B4 extends javax.swing.JFrame  {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
+        int row = jTable1.getSelectedRow();
+        boolean f = service.removeUser(row);
+      
+        if(row >= 0 || row < jTable1.getSelectedRowCount() - 1){
+            if(f){
+                tm.removeRow(row);
+                JOptionPane.showMessageDialog(this, "Thanh cong");
+            }    
+        }else{
+            JOptionPane.showMessageDialog(this, "Vui long chon");
+        }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        
-        
+        int row = jTable1.getSelectedRow();
+        jTextField1.setText((String) tm.getValueAt(row, 0));
+        jPasswordField1.setText((String) tm.getValueAt(row, 1));
+        String role = (String) tm.getValueAt(row, 2);
+        System.out.println(role);
+        if(role.equalsIgnoreCase("admin")){
+            jRadioButton2.setSelected(true);
+        }else{
+            jRadioButton1.setSelected(true);
+        }
+
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       int row = jTable1.getSelectedRow();
+      boolean f = service.upDate(this.readForm(), row);
+      if(f){
+          JOptionPane.showMessageDialog(this, "Thanh cong");
+          fillTable();
+      }else{
+          JOptionPane.showMessageDialog(this, "loi");
+      }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        jTextField1.setText("");
+        jPasswordField1.setText("");
+        jRadioButton2.setSelected(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,10 +332,23 @@ public class Lab2B4 extends javax.swing.JFrame  {
     private void fillTable() {
         tm.setRowCount(0);
         for (lab2Bai4.User u : service.getAll()) {
-          tm.addRow((Object[]) u.toObject());
+            tm.addRow((Object[]) u.toObject());
         }
     }
-    
+
+    private User readForm() {
+        String ten, pass, role;
+        ten = jTextField1.getText();
+        pass = jPasswordField1.getText();
+        if (jRadioButton2.isSelected()) {
+            role = "Admin";
+        } else {
+            role = "User";
+        }
+        return new User(ten, pass, role);
+    }
+
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
@@ -307,5 +371,4 @@ public class Lab2B4 extends javax.swing.JFrame  {
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 
-    
 }

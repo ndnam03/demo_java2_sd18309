@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class UserServiceImpl implements UserService {
 
-    private List<User> listUser = new ArrayList<>();
+    public List<User> listUser = new ArrayList<>();
 
     public UserServiceImpl() {
         listUser.add(new User("trang1", "1", "User"));
@@ -29,12 +29,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(User u) {
-        boolean t = false;
+        
         if (u != null) {
-            t = true;
+            listUser.add(u);
+            return true;
 
         }
-        return t;
+        return false;
     }
 
     @Override
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean uppDate(User u, int index) {
+    public boolean upDate(User u, int index) {
         boolean t = false;
         if (index >= 0 && u != null) {
             listUser.set(index, u);

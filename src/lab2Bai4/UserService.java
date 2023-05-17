@@ -13,6 +13,6 @@ import java.util.List;
 public interface UserService {
     public boolean addUser(User u);
     public boolean removeUser(int index);
-    public boolean uppDate(User u, int index);
+    public boolean upDate(User u, int index);
     public List<User> getAll( ); 
 }
